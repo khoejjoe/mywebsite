@@ -32,9 +32,9 @@
         <h2 class="cat-label">Landscape — 風景攝影</h2>
         <!-- data-images 填入該分類所有照片路徑 -->
         <div class="category-stack fade-in" 
-             data-images="攝影/000009650026.jpg, 攝影/000009650032.jpg,攝影/000009650033.jpg,攝影/_MG_6472.jpg,攝影/_MG_9206.jpg,攝影/_MG_9225.jpg,攝影/_MG_9420.jpg,攝影/_MG_9475.jpg,攝影/_MG_9524.jpg,攝影/203088.jpg,攝影/11090016.JPG,攝影/IMG_5969.jpg,攝影/守護漁港的高塔.jpg">
+             data-images="攝影/000009650026.webp, 攝影/000009650032.jpg,攝影/000009650033.jpg,攝影/_MG_6472.jpg,攝影/_MG_9206.jpg,攝影/_MG_9225.jpg,攝影/_MG_9420.jpg,攝影/_MG_9475.jpg,攝影/_MG_9524.jpg,攝影/203088.jpg,攝影/11090016.JPG,攝影/IMG_5969.jpg,攝影/守護漁港的高塔.jpg">
             <div class="stack-cover">
-                <img src="攝影/000009650026.jpg" alt="Landscape Cover">
+                <img src="攝影/000009650026.webp" alt="Landscape Cover">
                 <div class="stack-hint">VIEW ALL</div>
             </div>
             <div class="work-info">
@@ -48,9 +48,9 @@
     <section id="portrait" class="category-section">
         <h2 class="cat-label">Portrait — 人像攝影</h2>
         <div class="category-stack fade-in" 
-             data-images="人像/168A9887.jpg,人像/_MG_6423.jpg,人像/_MG_6445.jpg,人像/_MG_8947.jpg,人像/_MG_8982.jpg,人像/_MG_8989.jpg,人像/_MG_9086.jpg">
+             data-images="人像/168A9887.webp,人像/_MG_6423.jpg,人像/_MG_6445.jpg,人像/_MG_8947.jpg,人像/_MG_8982.jpg,人像/_MG_8989.jpg,人像/_MG_9086.jpg">
             <div class="stack-cover">
-                <img src="人像/168A9887.jpg" alt="Portrait Cover">
+                <img src="人像/168A9887.webp" alt="Portrait Cover">
                 <div class="stack-hint">VIEW ALL</div>
             </div>
             <div class="work-info">
@@ -64,9 +64,9 @@
     <section id="wedding" class="category-section">
         <h2 class="cat-label">Wedding — 婚紗攝影</h2>
         <div class="category-stack fade-in" 
-             data-images="婚紗/168A1805-編輯.jpg,婚紗/168A0947-編輯.jpg,婚紗/168A1135-編輯-編輯.jpg,婚紗/168A1154-編輯.jpg,婚紗/168A1175-編輯.jpg,婚紗/168A1211-編輯.jpg,婚紗/168A1330-編輯.jpg,婚紗/168A1422-編輯.jpg,婚紗/168A1516-編輯-編輯.jpg,婚紗/168A1605-編輯.jpg,婚紗/168A1667-編輯.jpg,婚紗/168A1771-編輯.jpg,婚紗/168A1805-編輯.jpg,婚紗/168A1836-編輯-編輯.jpg,婚紗/168A1868-編輯.jpg婚紗/168A1931-編輯.jpg,婚紗/168A1957-編輯.jpg,婚紗/168A2015-編輯-編輯.jpg,婚紗/168A2089.jpg,婚紗/168A2165-編輯.jpg,婚紗/168A2188-編輯.jpg,婚紗/168A2223.jpg,婚紗/168A2262-編輯.jpg,婚紗/168A2291-編輯.jpg,">
+             data-images="婚紗/168A1805-編輯.webp,婚紗/168A0947-編輯.jpg,婚紗/168A1135-編輯-編輯.jpg,婚紗/168A1154-編輯.jpg,婚紗/168A1175-編輯.jpg,婚紗/168A1211-編輯.jpg,婚紗/168A1330-編輯.jpg,婚紗/168A1422-編輯.jpg,婚紗/168A1516-編輯-編輯.jpg,婚紗/168A1605-編輯.jpg,婚紗/168A1667-編輯.jpg,婚紗/168A1771-編輯.jpg,婚紗/168A1805-編輯.jpg,婚紗/168A1836-編輯-編輯.jpg,婚紗/168A1868-編輯.jpg婚紗/168A1931-編輯.jpg,婚紗/168A1957-編輯.jpg,婚紗/168A2015-編輯-編輯.jpg,婚紗/168A2089.jpg,婚紗/168A2165-編輯.jpg,婚紗/168A2188-編輯.jpg,婚紗/168A2223.jpg,婚紗/168A2262-編輯.jpg,婚紗/168A2291-編輯.jpg,">
             <div class="stack-cover">
-                <img src="婚紗/168A1805-編輯.jpg" alt="Wedding Cover">
+                <img src="婚紗/168A1805-編輯.webp" alt="Wedding Cover">
                 <div class="stack-hint">VIEW ALL</div>
             </div>
             <div class="work-info">
@@ -145,11 +145,18 @@ document.querySelectorAll('.category-stack').forEach(stack => {
 });
 
 function updateLightbox() {
+    // 1. 先顯示透明度，並可以加入一個旋轉符號（如果需要）
     fullImg.style.opacity = '0';
-    setTimeout(() => {
-        fullImg.src = currentCategoryImages[currentIndex];
+    
+    // 2. 建立一個虛擬的 Image 物件來監聽圖片是否下載完成
+    const tempImg = new Image();
+    tempImg.src = currentCategoryImages[currentIndex];
+    
+    tempImg.onload = function() {
+        // 3. 確定圖片下載完了，才換圖並顯示出來
+        fullImg.src = tempImg.src;
         fullImg.style.opacity = '1';
-    }, 200);
+    };
 }
 
 function nextImage() {
