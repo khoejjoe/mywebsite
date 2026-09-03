@@ -1,0 +1,279 @@
+/* --- Base --- */
+:root {
+    --bg: #ffffff;
+    --text: #111111;
+    --muted: #888888;
+    --spacing: 15vh;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- Header --- */
+.site-header {
+    position: fixed;
+    top: 0; width: 100%;
+    padding: 35px 50px;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 1000;
+}
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    max-width: 1600px; margin: 0 auto;
+}
+.logo {
+    font-size: 1.1rem; font-weight: 600; letter-spacing: 0.3em;
+    text-decoration: none; color: var(--text);
+}
+.site-nav a {
+    margin-left: 25px; font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 0.15em; text-decoration: none; color: var(--text);
+}
+
+/* --- Layout --- */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 180px 40px 100px;
+}
+.category-section { margin-bottom: var(--spacing); }
+.cat-label {
+    font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.4em;
+    color: var(--muted); margin-bottom: 50px; font-weight: 400;
+}
+
+/* --- Work Items --- */
+.work-item { margin-bottom: 12vh; cursor: zoom-in; }
+.work-item img { width: 100%; height: auto; display: block; transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+.work-item:hover img { transform: scale(1.02); }
+.work-info { margin-top: 15px; display: flex; flex-direction: column; gap: 4px; }
+.p-name { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.05em; }
+.p-meta { font-size: 0.7rem; color: var(--muted); }
+
+/* --- About Section --- */
+.about-section { border-top: 1px solid #eee; padding-top: 80px; }
+.about-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; }
+.profile-pic { width: 100%; filter: grayscale(100%); transition: 0.8s; }
+.profile-pic:hover { filter: grayscale(0%); }
+.bio p { margin-bottom: 25px; font-size: 0.95rem; text-align: justify; }
+.about-links a {
+    margin-right: 30px; font-size: 0.75rem; text-decoration: none;
+    color: var(--text); border-bottom: 1px solid #000; padding-bottom: 2px;
+}
+/* --- Category Stack 堆疊效果 --- */
+.category-stack {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 15vh;
+}
+
+.stack-cover {
+    position: relative;
+    width: 100%;
+    background: #fff;
+    z-index: 3;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 後層裝飾照片 1 */
+.stack-cover::before {
+    content: "";
+    position: absolute;
+    top: 10px; left: 0;
+    width: 100%; height: 100%;
+    background: #f0f0f0;
+    border: 1px solid #eee;
+    z-index: -1;
+    transform: translateY(0);
+    transition: transform 0.4s ease;
+}
+
+/* 後層裝飾照片 2 */
+.stack-cover::after {
+    content: "";
+    position: absolute;
+    top: 20px; left: 0;
+    width: 100%; height: 100%;
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    z-index: -2;
+    transform: translateY(0);
+    transition: transform 0.5s ease;
+}
+
+/* 懸停時展開一點點 */
+.category-stack:hover .stack-cover {
+    transform: translateY(-5px);
+}
+.category-stack:hover .stack-cover::before {
+    transform: translateY(15px);
+}
+.category-stack:hover .stack-cover::after {
+    transform: translateY(30px);
+}
+
+.stack-cover img {
+    width: 100%;
+    height: auto;
+    display: block;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* 查看全部的提示文字 */
+.stack-hint {
+    position: absolute;
+    bottom: 30px; right: 30px;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: #fff;
+    background: rgba(0,0,0,0.2);
+    padding: 8px 15px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.category-stack:hover .stack-hint {
+    opacity: 1;
+}
+
+.work-info {
+    margin-top: 50px; /* 留出堆疊展開的空間 */
+}
+/* --- Lightbox & Arrows --- */
+.lightbox {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.98);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+.lightbox.active { display: flex; }
+.lightbox-content {
+    max-width: 90%;
+    max-height: 85vh;
+}
+#full-img {
+    max-width: 100%;
+    max-height: 85vh;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.05);
+}
+
+/* 箭頭樣式 */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    color: #000;
+    cursor: pointer;
+    padding: 20px;
+    z-index: 2100;
+    transition: opacity 0.3s;
+    font-family: serif; /* 讓長箭頭符號更好看 */
+}
+.nav-btn:hover { opacity: 0.3; }
+.prev-btn { left: 30px; }
+.next-btn { right: 30px; }
+
+.close-btn {
+    position: absolute;
+    top: 40px; right: 50px;
+    font-size: 2.5rem; cursor: pointer; z-index: 2200;
+}
+
+/* --- Animation --- */
+.fade-in { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .site-header { padding: 25px; }
+    .header-inner { flex-direction: column; gap: 15px; }
+    .nav-btn { font-size: 1.5rem; padding: 10px; }
+    .prev-btn { left: 10px; }
+    .next-btn { right: 10px; }
+    .about-grid { grid-template-columns: 1fr; }
+}
+/* --- About Section 優化樣式 (移除下載版) --- */
+.about-section {
+    padding: 120px 0;
+    border-top: 1px solid #eeeeee;
+    margin-bottom: 100px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 80px;
+    align-items: start;
+}
+
+.profile-img {
+    width: 100%;
+    height: auto;
+    filter: grayscale(100%);
+    transition: filter 0.8s ease;
+}
+
+.bio p {
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--text);
+    text-align: justify;
+}
+
+/* 聯絡資訊區塊 */
+.contact-info {
+    margin-top: 40px; /* 增加與上方自傳的間距 */
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.contact-tag {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+}
+
+.email-footer-link {
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.email-footer-link:hover {
+    border-bottom-color: #000;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    .contact-info {
+        margin-top: 30px;
+        flex-direction: column;
+        gap: 20px;
+    }
+}
